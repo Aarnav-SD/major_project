@@ -1,60 +1,63 @@
 import csv
 from pathlib import Path
 
+from robustcompute.actions.base_inference import BaseInference
 from robustcompute.core.context import InferenceContext
-from robustcompute.evaluation.gsm8k import score_gsm8k
 
 
 def generate_gsm8k_traces(
     dataset,
-    llm,
+    base_inference: BaseInference,
     stop_action,
     reason_action,
     output_path: str,
     limit: int = 20,
 ):
+    """
+    Generate counterfactual GSM8K traces.
+
+    For every task we observe all currently available
+    inference paths:
+
+        BASE -> STOP
+        BASE -> REASON
+
+    This is an offline counterfactual data-generation
+    procedure. Later online-routing experiments will
+    reveal only the outcome of the selected action.
+    """
+
     rows = []
 
-    total = min(limit, len(dataset))
+    total = min(
+        limit,
+        len(dataset),
+    )
 
     for i in range(total):
+
         task = dataset[i]
 
-        print(f"\n[{i + 1}/{total}] {task.task_id}")
-
-        # ----------------------------
-        # BASE
-        # ----------------------------
-
-        base_prompt = f"""
-Solve the following math problem.
-
-Question:
-{task.question}
-
-Return your final answer in this exact format:
-FINAL_ANSWER: <number>
-"""
-
-        base_result = llm.generate(
-            prompt=base_prompt,
-            task_id=task.task_id,
-            action="BASE",
-            max_new_tokens=256,
+        print(
+            f"\n[{i + 1}/{total}] "
+            f"{task.task_id}"
         )
 
-        base_result.quality = score_gsm8k(
-            base_result.answer,
-            task.ground_truth,
+        # =================================
+        # BASE
+        # =================================
+
+        base_result = (
+            base_inference.execute(task)
         )
 
         context = InferenceContext(
             base_result=base_result
         )
 
-        # ----------------------------
+        # =================================
         # ACTIONS
-        # ----------------------------
+        # =================================
 
         stop_result = stop_action.execute(
             task,
@@ -66,9 +69,9 @@ FINAL_ANSWER: <number>
             context,
         )
 
-        # ----------------------------
+        # =================================
         # MARGINAL QUALITY
-        # ----------------------------
+        # =================================
 
         delta_stop = (
             stop_result.quality
@@ -80,62 +83,291 @@ FINAL_ANSWER: <number>
             - base_result.quality
         )
 
-        # ----------------------------
-        # COST PROXIES
-        # ----------------------------
+        # =================================
+        # END-TO-END PATH COSTS
+        # =================================
 
-        base_tokens = (
-            base_result.input_tokens
-            + base_result.output_tokens
+        # STOP adds no inference work, but
+        # the BASE computation is still a
+        # sunk request cost.
+
+        stop_path_total_tokens = (
+            base_result.total_tokens
+            + stop_result.total_tokens
         )
 
-        reason_tokens = (
-            reason_result.input_tokens
-            + reason_result.output_tokens
+        stop_path_total_latency_ms = (
+            base_result.latency_ms
+            + stop_result.latency_ms
         )
 
-        # STOP performs no extra work.
-        stop_tokens = 0
+        stop_path_total_energy_j = (
+            base_result.energy_j
+            + stop_result.energy_j
+        )
+
+        # REASON is executed after BASE from
+        # the controller's cost perspective.
+
+        reason_path_total_tokens = (
+            base_result.total_tokens
+            + reason_result.total_tokens
+        )
+
+        reason_path_total_latency_ms = (
+            base_result.latency_ms
+            + reason_result.latency_ms
+        )
+
+        reason_path_total_energy_j = (
+            base_result.energy_j
+            + reason_result.energy_j
+        )
+
+        # =================================
+        # TRACE ROW
+        # =================================
 
         row = {
+
+            # ---------------------------------
+            # Task
+            # ---------------------------------
+
             "task_id": task.task_id,
             "dataset": task.dataset,
             "question": task.question,
             "ground_truth": task.ground_truth,
 
-            "base_answer": base_result.answer,
-            "base_quality": base_result.quality,
-            "base_latency_ms": base_result.latency_ms,
-            "base_tokens": base_tokens,
+            # =================================
+            # BASE — OUTCOME
+            # =================================
 
-            "stop_quality": stop_result.quality,
-            "stop_latency_ms": stop_result.latency_ms,
-            "stop_tokens": stop_tokens,
-            "delta_stop": delta_stop,
+            "base_answer":
+                base_result.answer,
 
-            "reason_answer": reason_result.answer,
-            "reason_quality": reason_result.quality,
-            "reason_latency_ms": reason_result.latency_ms,
-            "reason_tokens": reason_tokens,
-            "delta_reason": delta_reason,
+            "base_quality":
+                base_result.quality,
+
+            # ---------------------------------
+            # BASE — Layer 1: workload
+            # ---------------------------------
+
+            "base_input_tokens":
+                base_result.input_tokens,
+
+            "base_output_tokens":
+                base_result.output_tokens,
+
+            "base_total_tokens":
+                base_result.total_tokens,
+
+            "base_decoding_steps":
+                base_result.decoding_steps,
+
+            # ---------------------------------
+            # BASE — Layer 2: runtime
+            # ---------------------------------
+
+            "base_latency_ms":
+                base_result.latency_ms,
+
+            "base_cuda_time_ms":
+                base_result.cuda_time_ms,
+
+            "base_inference_wall_ms":
+                base_result.inference_wall_ms,
+
+            "base_peak_memory_mb":
+                base_result.peak_memory_mb,
+
+            "base_peak_extra_memory_mb":
+                base_result.peak_extra_memory_mb,
+
+            # ---------------------------------
+            # BASE — Layer 3: GPU
+            # ---------------------------------
+
+            "base_avg_power_w":
+                base_result.avg_power_w,
+
+            "base_peak_power_w":
+                base_result.peak_power_w,
+
+            "base_energy_j":
+                base_result.energy_j,
+
+            "base_avg_gpu_utilization":
+                base_result.avg_gpu_utilization,
+
+            "base_peak_gpu_utilization":
+                base_result.peak_gpu_utilization,
+
+            "base_avg_memory_utilization":
+                base_result.avg_memory_utilization,
+
+            # =================================
+            # STOP — OUTCOME
+            # =================================
+
+            "stop_quality":
+                stop_result.quality,
+
+            "delta_stop":
+                delta_stop,
+
+            # ---------------------------------
+            # STOP — incremental action cost
+            # ---------------------------------
+
+            "stop_additional_tokens":
+                stop_result.total_tokens,
+
+            "stop_additional_latency_ms":
+                stop_result.latency_ms,
+
+            "stop_additional_cuda_time_ms":
+                stop_result.cuda_time_ms,
+
+            "stop_additional_energy_j":
+                stop_result.energy_j,
+
+            # ---------------------------------
+            # BASE -> STOP total path
+            # ---------------------------------
+
+            "stop_path_total_tokens":
+                stop_path_total_tokens,
+
+            "stop_path_total_latency_ms":
+                stop_path_total_latency_ms,
+
+            "stop_path_total_energy_j":
+                stop_path_total_energy_j,
+
+            # =================================
+            # REASON — OUTCOME
+            # =================================
+
+            "reason_answer":
+                reason_result.answer,
+
+            "reason_quality":
+                reason_result.quality,
+
+            "delta_reason":
+                delta_reason,
+
+            # ---------------------------------
+            # REASON — Layer 1: workload
+            # ---------------------------------
+
+            "reason_input_tokens":
+                reason_result.input_tokens,
+
+            "reason_output_tokens":
+                reason_result.output_tokens,
+
+            "reason_total_tokens":
+                reason_result.total_tokens,
+
+            "reason_decoding_steps":
+                reason_result.decoding_steps,
+
+            # ---------------------------------
+            # REASON — Layer 2: runtime
+            # ---------------------------------
+
+            "reason_latency_ms":
+                reason_result.latency_ms,
+
+            "reason_cuda_time_ms":
+                reason_result.cuda_time_ms,
+
+            "reason_inference_wall_ms":
+                reason_result.inference_wall_ms,
+
+            "reason_peak_memory_mb":
+                reason_result.peak_memory_mb,
+
+            "reason_peak_extra_memory_mb":
+                reason_result.peak_extra_memory_mb,
+
+            # ---------------------------------
+            # REASON — Layer 3: GPU
+            # ---------------------------------
+
+            "reason_avg_power_w":
+                reason_result.avg_power_w,
+
+            "reason_peak_power_w":
+                reason_result.peak_power_w,
+
+            "reason_energy_j":
+                reason_result.energy_j,
+
+            "reason_avg_gpu_utilization":
+                reason_result.avg_gpu_utilization,
+
+            "reason_peak_gpu_utilization":
+                reason_result.peak_gpu_utilization,
+
+            "reason_avg_memory_utilization":
+                reason_result.avg_memory_utilization,
+
+            # ---------------------------------
+            # BASE -> REASON total path
+            # ---------------------------------
+
+            "reason_path_total_tokens":
+                reason_path_total_tokens,
+
+            "reason_path_total_latency_ms":
+                reason_path_total_latency_ms,
+
+            "reason_path_total_energy_j":
+                reason_path_total_energy_j,
         }
 
         rows.append(row)
 
+        # =================================
+        # LIVE DIAGNOSTICS
+        # =================================
+
         print(
-            f"BASE={base_result.quality:.0f} | "
+            f"BASE={base_result.quality:.0f} "
+            f"("
+            f"{base_result.output_tokens} out tok, "
+            f"{base_result.latency_ms:.0f} ms, "
+            f"{base_result.energy_j:.1f} J"
+            f") | "
             f"STOP={stop_result.quality:.0f} | "
-            f"REASON={reason_result.quality:.0f} | "
+            f"REASON={reason_result.quality:.0f} "
+            f"("
+            f"{reason_result.output_tokens} out tok, "
+            f"{reason_result.latency_ms:.0f} ms, "
+            f"{reason_result.energy_j:.1f} J"
+            f") | "
             f"ΔReason={delta_reason:+.0f}"
         )
 
-    save_traces(rows, output_path)
+    save_traces(
+        rows,
+        output_path,
+    )
 
     return rows
 
 
-def save_traces(rows, output_path: str):
-    path = Path(output_path)
+def save_traces(
+    rows,
+    output_path: str,
+):
+
+    path = Path(
+        output_path
+    )
 
     path.parent.mkdir(
         parents=True,
@@ -159,5 +391,9 @@ def save_traces(rows, output_path: str):
         writer.writeheader()
         writer.writerows(rows)
 
-    print(f"\nSaved {len(rows)} traces to:")
+    print(
+        f"\nSaved {len(rows)} "
+        f"traces to:"
+    )
+
     print(path)

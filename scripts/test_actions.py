@@ -4,6 +4,7 @@ from robustcompute.evaluation.gsm8k import score_gsm8k
 
 from robustcompute.core.context import InferenceContext
 
+from robustcompute.actions.base_inference import BaseInference
 from robustcompute.actions.stop import StopAction
 from robustcompute.actions.reason import ReasonAction
 
@@ -22,27 +23,12 @@ def main():
     # BASE INFERENCE
     # ---------------------------------------
 
-    base_prompt = f"""
-Answer the following math problem directly.
-
-Question:
-{task.question}
-
-Return only the final numerical answer.
-Do not explain your reasoning.
-"""
-
-    base_result = llm.generate(
-        prompt=base_prompt,
-        task_id=task.task_id,
-        action="BASE",
+    base_inference = BaseInference(
+        llm=llm,
         max_new_tokens=64
     )
 
-    base_result.quality = score_gsm8k(
-        base_result.answer,
-        task.ground_truth
-    )
+    base_result = base_inference.execute(task)
 
     # ---------------------------------------
     # CREATE CONTEXT

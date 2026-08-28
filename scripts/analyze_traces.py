@@ -129,7 +129,7 @@ def main():
 
     parser.add_argument(
         "--input",
-        default="data/traces/gsm8k_initial.csv",
+        default="data/traces/gsm8k_base_performance_100_task.csv",
     )
 
     args = parser.parse_args()

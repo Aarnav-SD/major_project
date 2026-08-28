@@ -1,0 +1,213 @@
+task_id,dataset,question,ground_truth,base_answer,base_quality,base_input_tokens,base_output_tokens,base_total_tokens,base_decoding_steps,base_latency_ms,base_cuda_time_ms,base_inference_wall_ms,base_peak_memory_mb,base_peak_extra_memory_mb,base_avg_power_w,base_peak_power_w,base_energy_j,base_avg_gpu_utilization,base_peak_gpu_utilization,base_avg_memory_utilization,stop_quality,delta_stop,stop_additional_tokens,stop_additional_latency_ms,stop_additional_cuda_time_ms,stop_additional_energy_j,stop_path_total_tokens,stop_path_total_latency_ms,stop_path_total_energy_j,reason_answer,reason_quality,delta_reason,reason_input_tokens,reason_output_tokens,reason_total_tokens,reason_decoding_steps,reason_latency_ms,reason_cuda_time_ms,reason_inference_wall_ms,reason_peak_memory_mb,reason_peak_extra_memory_mb,reason_avg_power_w,reason_peak_power_w,reason_energy_j,reason_avg_gpu_utilization,reason_peak_gpu_utilization,reason_avg_memory_utilization,reason_path_total_tokens,reason_path_total_latency_ms,reason_path_total_energy_j
+gsm8k_train_0,gsm8k,"Natalia sold clips to 48 of her friends in April, and then she sold half as many clips in May. How many clips did Natalia sell altogether in April and May?",72,48 + (48 / 2) = 72,1.0,108,15,123,15,976.2931590012158,1063.5406494140625,976.2931590012158,2964.6796875,19.400390625,28.539684210526318,48.912,27.05648210174115,27.0,71.0,15.578947368421053,1.0,0.0,0,0.0,0.0,0.0,123,976.2931590012158,27.05648210174115,"To solve this problem, we need to follow these steps:
+
+1. Determine how many clips Natalia sold in May.
+2. Add the number of clips sold in April to the number of clips sold in May.
+
+Step 1: Calculate the number of clips sold in May.
+- Natalia sold half as many clips in May as she did in April.
+- Number of clips sold in April = 48
+- Number of clips sold in May = \( \frac{48}{2} = 24 \)
+
+Step 2: Add the number of clips sold in April to the number of clips sold in May.
+- Total number of clips sold in April and May = Number of clips sold in April + Number of clips sold in May
+- Total number of clips sold = \( 48 + 24 = 72 \)
+
+Therefore, the total number of clips Natalia sold in April and May is 72.
+
+FINAL_ANSWER: 72",1.0,0.0,115,201,316,201,5371.938593998493,5398.57861328125,5371.938593998493,2965.0625,10.658203125,56.89351485148515,73.745,304.9583923671503,61.43564356435643,64.0,56.386138613861384,439,6348.231752999709,332.01487446889143
+gsm8k_train_1,gsm8k,"Weng earns $12 an hour for babysitting. Yesterday, she just did 50 minutes of babysitting. How much did she earn?",10,0.8,0.0,100,4,104,4,103.21589099839912,106.93971252441406,103.21589099839912,2963.61328125,9.208984375,50.661,58.643,2.8140900738206294,63.0,63.0,57.0,0.0,0.0,0,0.0,0.0,0.0,104,103.21589099839912,2.8140900738206294,"To solve this problem, we need to follow these steps:
+
+1. Determine how many hours Weng worked.
+2. Calculate her earnings based on her hourly rate.
+
+Step 1: Convert the time from minutes to hours.
+Since there are 60 minutes in an hour, we can convert 50 minutes to hours by dividing by 60:
+\[ \text{Hours} = \frac{50}{60} = \frac{5}{6} \]
+
+Step 2: Calculate her earnings.
+Her hourly rate is $12 per hour. To find out how much she earned, we multiply her hourly rate by the number of hours she worked:
+\[ \text{Earnings} = 12 \times \frac{5}{6} = 10 \]
+
+Therefore, Weng earned $10 yesterday.
+
+FINAL_ANSWER: 10",1.0,1.0,107,181,288,181,5020.380058998853,5135.45654296875,5020.380058998853,2964.640625,10.236328125,56.27503125,61.222,282.40957560626856,58.34375,68.0,53.010416666666664,392,5123.595949997252,285.2236656800892
+gsm8k_train_2,gsm8k,"Betty is saving money for a new wallet which costs $100. Betty has only half of the money she needs. Her parents decided to give her $15 for that purpose, and her grandparents twice as much as her parents. How much more money does Betty need to buy the wallet?",5,$100 - ($15 + 2 * $15) = $45,0.0,130,21,151,21,675.9261129991501,675.7760009765625,675.9261129991501,2966.216796875,11.8115234375,50.93492307692308,58.539,32.389986320496234,47.92307692307692,57.0,41.46153846153846,0.0,0.0,0,0.0,0.0,0.0,151,675.9261129991501,32.389986320496234,"To solve this problem, let's break it down into steps:
+
+1) First, we know that the wallet costs $100.
+2) Betty currently has half of what she needs, so she has $100 / 2 = $50.
+3) Her parents gave her $15.
+4) Her grandparents gave her twice as much as her parents, so they gave her 2 * $15 = $30.
+5) Now, let's add up all the money Betty has: $50 (her own savings) + $15 (parents' gift) + $30 (grandparents' gift) = $95.
+6) To find out how much more money Betty needs, we subtract the total amount she has from the cost of the wallet: $100 - $95 = $5.
+
+Therefore, FINAL_ANSWER: 5",1.0,1.0,137,185,322,185,4799.449837999418,4845.6689453125,4799.449837999418,2966.85302734375,12.44775390625,58.52830769230769,61.957,278.9292237998682,62.747252747252745,68.0,57.61538461538461,473,5475.375950998568,311.31921012036446
+gsm8k_train_3,gsm8k,"Julie is reading a 120-page book. Yesterday, she was able to read 12 pages and today, she read twice as many pages as yesterday. If she wants to read half of the remaining pages tomorrow, how many pages should she read?",42,"120 - (12 + 24) = 84
+
+84 / 2 = 42
+
+FINAL_ANSWER: 42",1.0,123,35,158,35,877.5209369996446,890.8850708007812,877.5209369996446,2965.57958984375,11.17529296875,59.553875,61.738,49.372112804467626,64.1875,66.0,58.0625,1.0,0.0,0,0.0,0.0,0.0,158,877.5209369996446,49.372112804467626,"To solve this problem, let's break it down into steps:
+
+1. **Determine the total number of pages Julie has already read:**
+   - Yesterday, she read 12 pages.
+   - Today, she read twice as many pages as yesterday, which means \(2 \times 12 = 24\) pages.
+   - Therefore, the total number of pages she has read so far is \(12 + 24 = 36\) pages.
+
+2. **Calculate the remaining pages in the book:**
+   - The book has 120 pages in total.
+   - Subtract the pages she has already read from the total: \(120 - 36 = 84\) pages.
+
+3. **Determine how many pages she plans to read tomorrow:**
+   - She wants to read half of the remaining pages tomorrow.
+   - Half of 84 pages is \(\frac{84}{2} = 42\) pages.
+
+So, Julie should read 42 pages tomorrow.
+
+FINAL_ANSWER: 42",1.0,0.0,130,223,353,223,5699.526977998175,5742.49755859375,5699.526977998175,2966.216796875,11.8115234375,59.95194444444444,66.448,339.1060983822863,63.916666666666664,67.0,58.833333333333336,511,6577.04791499782,388.4782111867539
+gsm8k_train_4,gsm8k,James writes a 3-page letter to 2 different friends twice a week.  How many pages does he write a year?,624,"3 * 2 * 2 * 52 = 672
+
+FINAL_ANSWER: 672",0.0,95,26,121,26,684.1193889995338,692.2338256835938,684.1193889995338,2963.416015625,9.01171875,60.54623076923077,61.747,38.719941869446274,62.92307692307692,68.0,57.92307692307692,0.0,0.0,0,0.0,0.0,0.0,121,684.1193889995338,38.719941869446274,"To determine how many pages James writes in a year, we need to break down the problem into smaller steps and calculate accordingly.
+
+1. **Calculate the number of letters written per week:**
+   - James writes a 3-page letter to each friend.
+   - He has 2 friends.
+   - Therefore, for one friend, he writes \(3 \text{ pages} \times 2 = 6 \text{ pages}\) per week.
+   - Since he writes to two different friends, the total number of pages per week is \(6 \text{ pages/friend} \times 2 \text{ friends} = 12 \text{ pages/week}\).
+
+2. **Calculate the number of weeks in a year:**
+   - There are typically 52 weeks in a year.
+
+3. **Calculate the total number of pages written per year:**
+   - Multiply the number of pages written per week by the number of weeks in a year.
+   - Total pages/year = \(12 \text{ pages/week} \times 52 \text{ weeks/year} = 624 \text{ pages/year}\).
+
+Therefore, the final answer is:
+
+FINAL_ANSWER: 624",1.0,1.0,102,254,356,254,6510.025799001596,6601.91455078125,6510.025799001596,2966.158203125,11.75390625,59.48778225806451,64.849,386.0752517910186,63.604838709677416,67.0,58.33064516129032,477,7194.14518800113,424.79519366046486
+gsm8k_train_5,gsm8k,"Mark has a garden with flowers. He planted plants of three different colors in it. Ten of them are yellow, and there are 80% more of those in purple. There are only 25% as many green flowers as there are yellow and purple flowers. How many flowers does Mark have in his garden?",35,10 + (10 * 1.8) + (10 * 0.25) = FINAL_ANSWER: 46,0.0,134,32,166,32,881.8541290020221,933.998779296875,881.8541290020221,2966.580078125,12.1748046875,56.578529411764706,59.486,49.92836187142625,60.470588235294116,70.0,49.529411764705884,0.0,0.0,0,0.0,0.0,0.0,166,881.8541290020221,49.92836187142625,"To solve this problem, let's break it down step by step:
+
+1) First, we know that there are 10 yellow flowers.
+2) We're told that there are 80% more purple flowers than yellow ones. To find out how many purple flowers there are, we calculate 80% of 10 (the number of yellow flowers), then add that to the original amount:
+   80% of 10 = 0.8 * 10 = 8
+   So, there are 8 more purple flowers than yellow ones.
+   Therefore, the total number of purple flowers is:
+   10 + 8 = 18
+3) Now, we need to find out how many green flowers there are. The problem states that there are only 25% as many green flowers as there are yellow and purple flowers combined. Let's first find the total number of yellow and purple flowers:
+   Yellow flowers + Purple flowers = 10 + 18 = 28
+4) Now, we can calculate the number of green flowers:
+   Green flowers = 25% of 28 = 0.25 * 28 = 7
+5) Finally, we can find the total number of flowers in the garden by adding up all the flower types:
+   Total flowers = Yellow flowers + Purple flowers + Green flowers
+                = 10 + 18 + 7
+                = 35
+
+Therefore, the FINAL ANSWER is 35.",1.0,1.0,141,320,461,320,8300.547645001643,8477.5498046875,8300.547645001643,2969.03515625,14.6298828125,60.02621153846154,72.171,496.53660391171667,63.333333333333336,68.0,57.08974358974359,627,9182.401774003665,546.4649657831429
+gsm8k_train_6,gsm8k,"Albert is wondering how much pizza he can eat in one day. He buys 2 large pizzas and 2 small pizzas. A large pizza has 16 slices and a small pizza has 8 slices. If he eats it all, how many pieces does he eat that day?",48,(2 * 16) + (2 * 8) = FINAL_ANSWER: 40,0.0,126,23,149,23,571.2981110009423,600.3134155273438,571.2981110009423,2965.8515625,11.447265625,57.56845454545454,59.373,30.286612196871197,60.81818181818182,65.0,54.36363636363637,0.0,0.0,0,0.0,0.0,0.0,149,571.2981110009423,30.286612196871197,"To determine how many pieces of pizza Albert eats in one day, we need to follow these steps:
+
+1. Calculate the total number of slices from the large pizzas.
+2. Calculate the total number of slices from the small pizzas.
+3. Add the two totals together to get the overall number of slices.
+
+Step 1: Calculate the total number of slices from the large pizzas.
+- Each large pizza has 16 slices.
+- Albert bought 2 large pizzas.
+\[ \text{Total slices from large pizzas} = 2 \times 16 = 32 \]
+
+Step 2: Calculate the total number of slices from the small pizzas.
+- Each small pizza has 8 slices.
+- Albert bought 2 small pizzas.
+\[ \text{Total slices from small pizzas} = 2 \times 8 = 16 \]
+
+Step 3: Add the two totals together.
+\[ \text{Total slices} = 32 + 16 = 48 \]
+
+Therefore, Albert eats a total of 48 pieces of pizza in one day.
+
+FINAL_ANSWER: 48",1.0,1.0,133,229,362,229,6193.612218001363,6221.08349609375,6193.612218001363,2966.48974609375,12.08447265625,59.23413793103448,63.091,363.947254283205,61.974137931034484,68.0,55.76724137931034,511,6764.910329002305,394.2338664800762
+gsm8k_train_7,gsm8k,"Ken created a care package to send to his brother, who was away at boarding school.  Ken placed a box on a scale, and then he poured into the box enough jelly beans to bring the weight to 2 pounds.  Then, he added enough brownies to cause the weight to triple.  Next, he added another 2 pounds of jelly beans.  And finally, he added enough gummy worms to double the weight once again.  What was the final weight of the box of goodies, in pounds?",16,"BOX_WEIGHT + JELLY_BEANS_1 + BROWNIES = TRIPLED_WEIGHT
+TRIPLED_WEIGHT + JELLY_BEANS_2 + GUMMY_WORMS = FINAL_WEIGHT
+
+FINAL_ANSWER: 18",0.0,175,50,225,50,1272.7175430009083,1300.0592041015625,1272.7175430009083,2970.30419921875,15.89892578125,62.8745,89.359,77.51870388460512,63.458333333333336,65.0,58.25,0.0,0.0,0,0.0,0.0,0.0,225,1272.7175430009083,77.51870388460512,"To solve this problem, we need to follow each step carefully and calculate the weight after each addition.
+
+1. **Initial Weight**: The initial weight is 0 pounds since no items were added yet.
+   - Initial weight = 0 pounds
+
+2. **First Addition (Jelly Beans)**: Ken adds enough jelly beans to bring the weight to 2 pounds.
+   - New weight = 2 pounds
+
+3. **Second Addition (Brownies)**: He adds enough brownies to cause the weight to triple.
+   - New weight = 2 * 3 = 6 pounds
+
+4. **Third Addition (Jelly Beans Again)**: He adds another 2 pounds of jelly beans.
+   - New weight = 6 + 2 = 8 pounds
+
+5. **Final Addition (Gummy Worms)**: He adds enough gummy worms to double the weight once again.
+   - Final weight = 8 * 2 = 16 pounds
+
+Therefore, the final weight of the box of goodies is 16 pounds.
+
+FINAL_ANSWER: 16",1.0,1.0,182,222,404,222,5618.249429997377,5662.29150390625,5618.249429997377,2970.939453125,16.5341796875,61.373878504672895,68.069,343.41457346321124,63.925233644859816,66.0,59.19626168224299,629,6890.966972998285,420.93327734781633
+gsm8k_train_8,gsm8k,"Alexis is applying for a new job and bought a new set of business clothes to wear to the interview. She went to a department store with a budget of $200 and spent $30 on a button-up shirt, $46 on suit pants, $38 on a suit coat, $11 on socks, and $18 on a belt. She also purchased a pair of shoes, but lost the receipt for them. She has $16 left from her budget. How much did Alexis pay for the shoes?",41,"BUTTON-UP_SHIRT_PRICE: 30
+SUIT_PANTS_PRICE: 46
+SUITE_COAT_PRICE: 38
+SOCKS_PRICE: 11
+BELT_PRICE: 18
+SHOES_PRICE: ?
+
+BUDGET: 200
+LEFTOVER: 16
+
+SHOES_PRICE := BUDGET - BUTTON-UP_SHIRT_PRICE - SUIT_PANTS_PRICE - SUITE_COAT",0.0,179,96,275,96,2447.7263310000126,2470.205078125,2447.7263310000126,2970.66748046875,16.26220703125,61.09482978723404,62.897,148.82716879708573,63.42553191489362,67.0,58.4468085106383,0.0,0.0,0,0.0,0.0,0.0,275,2447.7263310000126,148.82716879708573,"To find out how much Alexis paid for the shoes, we need to follow these steps:
+
+1. Calculate the total amount Alexis spent on all items except the shoes.
+2. Subtract this total from her initial budget to find out how much she had left after purchasing those items.
+3. Add the remaining money to the amount she still has left to determine the cost of the shoes.
+
+Let's start with step 1:
+
+Total spent on shirts, pants, coat, socks, and belt = $30 + $46 + $38 + $11 + $18
+= $153
+
+Now let's move to step 2:
+
+Amount left after buying shirts, pants, coat, socks, and belt = Budget - Total spent
+= $200 - $153
+= $47
+
+Finally, for step 3:
+
+Cost of shoes = Amount left after other purchases + Remaining money
+= $47 + $16
+= $63
+
+Therefore, Alexis paid $63 for the shoes.",0.0,0.0,186,215,401,215,5498.541608998494,5534.84326171875,5498.541608998494,2971.302734375,16.8974609375,61.23039047619048,63.99,335.55986989699625,63.0,66.0,58.06666666666667,676,7946.267939998506,484.387038694082
+gsm8k_train_9,gsm8k,"Tina makes $18.00 an hour.  If she works more than 8 hours per shift, she is eligible for overtime, which is paid by your hourly wage + 1/2 your hourly wage.  If she works 10 hours every day for 5 days, how much money does she make?",990,"18 * (10 - 8) + 18 * 10 * 0.5
+
+FINAL_ANSWER: 246",0.0,137,33,170,33,857.1975240010943,904.455078125,857.1975240010943,2966.85302734375,12.44775390625,57.7535,62.753,44.74120416329712,57.8125,65.0,52.4375,0.0,0.0,0,0.0,0.0,0.0,170,857.1975240010943,44.74120416329712,"To calculate Tina's total earnings, we need to break down her work into regular hours and overtime hours, then apply the appropriate pay rates.
+
+### Step 1: Calculate Regular Hours
+- Tina works 10 hours each day.
+- She works 5 days a week.
+
+Regular hours = Total hours worked / Number of days
+Regular hours = 10 hours/day * 5 days = 50 hours
+
+### Step 2: Determine Overtime Hours
+Since Tina works more than 8 hours per shift (which is not specified but assumed), all her hours fall under overtime.
+
+Overtime hours = Total hours worked - Regular hours
+Overtime hours = 10 hours - 50 hours = 0 hours (This should be corrected as she works more than 8 hours)
+
+### Step 3: Calculate Pay for Regular Hours
+Pay for regular hours = Regular hours * Hourly rate
+Pay for regular hours = 50 hours * $18/hour = $900
+
+### Step 4: Calculate Pay for Overtime Hours
+Since there were no overtime hours calculated above, we can skip this step.
+
+### Step 5: Calculate Total Earnings
+Total earnings = Pay for regular hours + Pay for overtime hours
+
+However, since there were no overtime hours, the calculation simplifies to just the regular hours.
+
+Final Answer: $900",0.0,0.0,144,283,427,283,6961.095459999342,7090.77685546875,6961.095459999342,2968.103515625,13.6982421875,62.27986466165414,65.492,433.3133705139731,65.06015037593986,68.0,60.18045112781955,597,7818.292984000436,478.05457467727024
